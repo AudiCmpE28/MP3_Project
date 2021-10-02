@@ -15,7 +15,8 @@ static void entry_point__halt(void);
 static void entry_point__handle_crash_report(void);
 static void entry_point__rtos_trace_init_after_mounting_sd_card(void);
 
-void entry_point(void) {
+void entry_point(void)
+{
   startup__initialize_ram();
   startup__initialize_fpu(); // Floating Point Nums
   startup__initialize_interrupts();
@@ -36,7 +37,8 @@ void entry_point(void) {
   peripherals_init();
   entry_point__handle_crash_report();
 
-  if (!sensors__init()) {
+  if (!sensors__init())
+  {
     printf("\n%s(): WARNING: Sensor errors on this board\n", __FUNCTION__);
   }
 
@@ -48,22 +50,28 @@ void entry_point(void) {
   entry_point__halt();
 }
 
-static void entry_point__halt(void) {
+static void entry_point__halt(void)
+{
   // main() should never return: CPU will now halt forever at this point.
   fprintf(stderr, "ERROR: main() should never return, program has been halted");
-  while (1) {
+  while (1)
+  {
   }
 }
 
-static void entry_point__handle_crash_report(void) {
-  if (crash__report_if_occurred()) {
-    while (sys_time__get_uptime_ms() < 5000) {
+static void entry_point__handle_crash_report(void)
+{
+  if (crash__report_if_occurred())
+  {
+    while (sys_time__get_uptime_ms() < 5000)
+    {
       ; // Deliberately delay the startup and let the user carefully read the information
     }
   }
 }
 
-static void entry_point__rtos_trace_init_after_mounting_sd_card(void) {
+static void entry_point__rtos_trace_init_after_mounting_sd_card(void)
+{
 #if !defined(configENABLE_TRACE_ON_SD_CARD) || !defined(configUSE_TRACE_FACILITY)
 #error "configENABLE_TRACE_ON_SD_CARD and configUSE_TRACE_FACILITY must be defined; try including FreeRTOSConfig.h"
 // If instructed to trace on the SD card, then start the trace immediately
